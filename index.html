@@ -41,50 +41,56 @@
     <script type="text/babel">
       console.log("야옹");
 
-      const catItem = (
-        <li>
-          <img src="https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript" />
-        </li>
-      );
+      function CatItem(props) {
+        return (
+          <li>
+            <img src={props.img} alt="cat-image" />
+          </li>
+        );
+      }
 
-      const mainCard = (
-        <div class="main-card">
-          <img
-            src="https://cataas.com/cat/60b73094e04e18001194a309/says/react"
-            alt="고양이"
-            width="400"
-          />
-          <button>🤍</button>
-        </div>
-      );
+      const MainCard = (props) => {
+        return (
+          <div class="main-card">
+            <img src={props.img} alt="cat-image" width={props.width} />
+            <button>🤍</button>
+          </div>
+        );
+      };
 
-      const favorite = (
-        <ul className="favorites">
-          {catItem}
-          {catItem}
-          {catItem}
-        </ul>
-      );
+      function Favorite(props) {
+        return (
+          <ul className="favorites">
+            <CatItem img={props.img} />
+          </ul>
+        );
+      }
 
-      const title = (
-        <h1>1번째 고양이 가라사대</h1>
-      )
+      const title = <h1>1번째 고양이 가라사대</h1>;
 
       const mainForm = (
         <form>
-      <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
-      <button type="submit">생성</button>
-    </form>
-      )
+          <input
+            type="text"
+            name="name"
+            placeholder="영어 대사를 입력해주세요"
+          />
+          <button type="submit">생성</button>
+        </form>
+      );
+
+      function sayHello(name) {
+        return "안녕 + " + name;
+      }
 
       const app = (
         <div>
           {title}
           {mainForm}
-        {mainCard}
-        {favorite}
+          <MainCard img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" alt="cat-image" width="300" />
+          <Favorite img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
         </div>
-      )
+      );
 
       const 여기다가그려 = document.querySelector("#app");
 
