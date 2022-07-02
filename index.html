@@ -22,9 +22,6 @@
       flex-wrap: wrap;
       gap: 15px;
     }
-    .favorites img {
-      width: 150px;
-    }
   </style>
   <body>
     <div id="app"></div>
@@ -39,62 +36,96 @@
     ></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script type="text/babel">
-      console.log("야옹");
-
-      function CatItem(props) {
+      function CatItem({ img }) {
         return (
           <li>
-            <img src={props.img} alt="cat-image" />
+            <img
+              src={img}
+              alt="cat-image"
+              style={{ width: "150px", border: "1px solid red" }}
+            />
           </li>
         );
       }
 
       const MainCard = (props) => {
         return (
-          <div class="main-card">
+          <div className="main-card">
             <img src={props.img} alt="cat-image" width={props.width} />
-            <button>🤍</button>
+            <button onClick={props.handleHeartClick}>🤍</button>
           </div>
         );
       };
 
-      function Favorite(props) {
+      function Favorite({ favorites }) {
         return (
           <ul className="favorites">
-            <CatItem img={props.img} />
+            {favorites.map((cat) => (
+              <CatItem img={cat} key={cat} />
+            ))}
           </ul>
         );
       }
 
-      const title = <h1>1번째 고양이 가라사대</h1>;
+      const Title = (props) => {
+        return <h1>{props.children}</h1>;
+      };
 
-      const mainForm = (
-        <form>
-          <input
-            type="text"
-            name="name"
-            placeholder="영어 대사를 입력해주세요"
-          />
-          <button type="submit">생성</button>
-        </form>
-      );
+      const Form = ({ handleFormSubmit }) => {
+        return (
+          <form onSubmit={handleFormSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="영어 대사를 입력해주세요"
+            />
+            <button type="submit">생성</button>
+          </form>
+        );
+      };
 
-      function sayHello(name) {
-        return "안녕 + " + name;
-      }
+      const App = () => {
+        const CAT1 =
+          "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+        const CAT2 =
+          "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+        const CAT3 =
+          "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
-      const app = (
-        <div>
-          {title}
-          {mainForm}
-          <MainCard img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" alt="cat-image" width="300" />
-          <Favorite img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
-        </div>
-      );
+        const [counter, setCounter] = React.useState(1);
+        const [image, setImage] = React.useState(CAT1);
+        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
+
+        function handleFormSubmit(event) {
+          event.preventDefault();
+          console.log("폼 전송됨");
+          setCounter(counter + 1);
+          setImage(CAT2);
+        }
+
+        function handleHeartClick() {
+          console.log("하트 눌렀음");
+          setFavorites([...favorites, CAT3])
+        }
+
+        return (
+          <div>
+            <Title>{counter}번째 고양이 가라사대</Title>
+            <Form handleFormSubmit={handleFormSubmit} />
+            <MainCard
+              img={image}
+              alt="cat-image"
+              width="300"
+              handleHeartClick={handleHeartClick}
+            />
+            <Favorite favorites={favorites} />
+          </div>
+        );
+      };
 
       const 여기다가그려 = document.querySelector("#app");
 
-      ReactDOM.render(app, 여기다가그려);
+      ReactDOM.render(<App />, 여기다가그려);
     </script>
   </body>
 </html>
